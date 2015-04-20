@@ -1,6 +1,6 @@
 {
   "name": "hexo-migrator-github-issue",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Github issue migrator plugin for Hexo.",
   "main": "index.js",
   "dependencies": {
