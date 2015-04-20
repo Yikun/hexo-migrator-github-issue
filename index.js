@@ -32,15 +32,15 @@ function nextpage(cb) {
       if (body && body.length) {
         for(var i in body) {
           var issue = body[i];
-          var category = [];
+          var tags = [];
           var data={};
           for (var i in issue.labels) {
-            category.push(issue.labels[i].name);
+            tags.push(issue.labels[i].name);
           }
           data.title = issue.title;
           data.content = issue.body;
           data.date = issue.created_at;
-          data.category = category;
+          data.tags = tags;
           post.create(data, true);
           log.i('create post: ' + data.title);
         }
