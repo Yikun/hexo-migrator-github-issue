@@ -1,9 +1,24 @@
 {
   "name": "hexo-migrator-github-issue",
-  "version": "0.0.1",
-  "description": "Github issue migrator plugin for Hexo",
-  "main": "index",
+  "version": "0.1.0",
+  "description": "Github issue migrator plugin for Hexo.",
+  "main": "index.js",
   "dependencies": {
     "octonode": "^0.6.16"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Yikun/hexo-migrator-github-issue.git"
+  },
+  "keywords": [
+    "migrator",
+    "hexo",
+    "github",
+    "issue"
+  ],
+  "author": "Jiang Yikun",
+  "bugs": {
+    "url": "https://github.com/Yikun/hexo-migrator-github-issue/issues"
+  },
+  "homepage": "https://github.com/Yikun/hexo-migrator-github-issue"
 }

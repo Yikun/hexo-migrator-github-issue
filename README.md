@@ -4,7 +4,9 @@ Migrate your blog from github issue to Hexo.
 
 ## Install
 
-Coming soon.
+``` bash
+$ npm install hexo-migrator-github-issue --save
+```
 
 ## Usage
 
