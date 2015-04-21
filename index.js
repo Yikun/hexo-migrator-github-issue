@@ -37,7 +37,7 @@ function nextpage(cb) {
           for (var i in issue.labels) {
             tags.push(issue.labels[i].name);
           }
-          data.title = issue.title;
+          data.title = issue.title.replace(/\"/g,"");
           data.content = issue.body;
           data.date = issue.created_at;
           data.tags = tags;
