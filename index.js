@@ -41,6 +41,7 @@ function nextpage(cb) {
           data.content = issue.body;
           data.date = issue.created_at;
           data.tags = tags;
+          data.number = issue.number;
           post.create(data, true);
           log.i('create post: ' + data.title);
         }
