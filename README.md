@@ -2,6 +2,14 @@
 
 Migrate your blog from github issue to Hexo.
 
+## Requirements
+You need to complete the setup of Hexo first, see [Hexo Setup](https://hexo.io/docs/setup.html).
+``` bash
+$ hexo init <folder>
+$ cd <folder>
+$ npm install
+```
+
 ## Install
 
 ``` bash
