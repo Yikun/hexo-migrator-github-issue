@@ -45,6 +45,8 @@ function nextpage(cb) {
             } else if (name.indexOf(topPrefix) != -1) {
               name = name.substr(topPrefix.length);
               data.top = parseInt(name);
+            } else if (name.toLowerCase() == "draft") {
+              data.layout = "draft"
             } else {
               tags.push(name);
             }
