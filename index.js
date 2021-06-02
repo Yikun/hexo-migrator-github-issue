@@ -1,4 +1,5 @@
 var github = require('octonode');
+var matter = require('hexo-front-matter');
 
 var log = hexo.log,
   post = hexo.post,
@@ -60,17 +61,27 @@ function nextpage(cb) {
             }
           }
 
+          // parse front-matter
+          issue.body = issue.body.replace(/\r\n/g, '\n');
+          var { _content, ...meta } = matter.parse(issue.body);
+          
           data.title = issue.title.replace(/\"/g,"");
           // if you migrate with --publish option, will skip unpublished issue
           if (publish_mode && (!published_tag) ) {
             log.i('skip unpublished post: ' + data.title);
             continue;
           }
-          data.content = issue.body;
+
+          data.content = _content;
           data.date = issue.created_at;
           data.tags = tags;
           data.categories = categories;
           data.number = issue.number;
+
+          if (meta) {
+            data = Object.assign(meta, data);
+          }
+
           post.create(data, true);
           log.i('create post: ' + data.title);
         }

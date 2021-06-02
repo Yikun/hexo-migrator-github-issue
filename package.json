@@ -4,7 +4,8 @@
   "description": "Github issue migrator plugin for Hexo.",
   "main": "index.js",
   "dependencies": {
-    "octonode": "^0.6.16"
+    "octonode": "^0.6.16",
+    "hexo-front-matter": "*"
   },
   "repository": {
     "type": "git",
