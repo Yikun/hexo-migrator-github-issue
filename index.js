@@ -32,8 +32,7 @@ hexo.extend.migrator.register('github-issue', function(args, callback){
 });
 
 function nextpage(cb) {
-  var topPrefix = 'top_';
-  var categoryPrefix = 'category_';
+  var category_prefix = 'category_';
   repo.issues(pagesn, function(err, body, headers) {
     if (!err) {
       if (body && body.length) {
@@ -46,12 +45,9 @@ function nextpage(cb) {
 
           for (var i in issue.labels) {
             var name = issue.labels[i].name;
-            if (name.indexOf(categoryPrefix) != -1) {
-              name = name.substr(categoryPrefix.length);
+            if (name.indexOf(category_prefix) != -1) {
+              name = name.substr(category_prefix.length);
               categories.push(name);
-            } else if (name.indexOf(topPrefix) != -1) {
-              name = name.substr(topPrefix.length);
-              data.top = parseInt(name);
             } else if (name.toLowerCase() == "draft") {
               data.layout = "draft"
             } else if (name.toLowerCase() == "publish") {
@@ -77,10 +73,7 @@ function nextpage(cb) {
           data.tags = tags;
           data.categories = categories;
           data.number = issue.number;
-
-          if (meta) {
-            data = Object.assign(meta, data);
-          }
+          data = Object.assign(meta, data);
 
           post.create(data, true);
           log.i('create post: ' + data.title);
