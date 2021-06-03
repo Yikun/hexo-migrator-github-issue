@@ -5,7 +5,7 @@ name: Hexo Migrator Test
 
 on:
   pull_request:
-    branches: [ main ]
+    branches: [ master ]
 
 jobs:
   build:
