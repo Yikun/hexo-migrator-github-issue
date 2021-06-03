@@ -1,4 +1,5 @@
 var github = require('octonode');
+var matter = require('hexo-front-matter');
 
 var log = hexo.log,
   post = hexo.post,
@@ -31,8 +32,9 @@ hexo.extend.migrator.register('github-issue', function(args, callback){
 });
 
 function nextpage(cb) {
-  var topPrefix = 'top_';
-  var categoryPrefix = 'category_';
+  var category_prefix = 'category_';
+  // refrence from https://github.com/hexojs/hexo-front-matter/blob/69516870249e91ba3e77e5b2e395645b3991d97a/lib/front_matter.js#L5
+  var regexp = /^(-{3,})(\r\n)([\s\S]+?)\r\n\1\r\n?([\s\S]*)/;
   repo.issues(pagesn, function(err, body, headers) {
     if (!err) {
       if (body && body.length) {
@@ -45,12 +47,9 @@ function nextpage(cb) {
 
           for (var i in issue.labels) {
             var name = issue.labels[i].name;
-            if (name.indexOf(categoryPrefix) != -1) {
-              name = name.substr(categoryPrefix.length);
+            if (name.indexOf(category_prefix) != -1) {
+              name = name.substr(category_prefix.length);
               categories.push(name);
-            } else if (name.indexOf(topPrefix) != -1) {
-              name = name.substr(topPrefix.length);
-              data.top = parseInt(name);
             } else if (name.toLowerCase() == "draft") {
               data.layout = "draft"
             } else if (name.toLowerCase() == "publish") {
@@ -60,17 +59,33 @@ function nextpage(cb) {
             }
           }
 
-          data.title = issue.title.replace(/\"/g,"");
+          // parse front-matter
+          var match = issue.body.match(regexp);
+          if (match) {
+            // replace CRLF with LF before parse
+            var separator = match[1];
+            var frontMatterData = match[3].replace(/\r\n/g, '\n');
+            var content = match[4];
+            var issueBody = separator + '\n' + frontMatterData + '\n' + separator + '\n' + content;
+          } else {
+            var issueBody = issue.body;
+          }
+          var { _content, ...meta } = matter.parse(issueBody);
+
+          data.title = (meta.title ? meta.title : issue.title).replace(/\"/g,"");
           // if you migrate with --publish option, will skip unpublished issue
           if (publish_mode && (!published_tag) ) {
             log.i('skip unpublished post: ' + data.title);
             continue;
           }
-          data.content = issue.body;
+
+          data.content = _content;
           data.date = issue.created_at;
           data.tags = tags;
           data.categories = categories;
           data.number = issue.number;
+          data = Object.assign(data, meta);
+
           post.create(data, true);
           log.i('create post: ' + data.title);
         }
