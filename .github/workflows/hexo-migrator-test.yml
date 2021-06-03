@@ -18,4 +18,4 @@ jobs:
           hexo init test
           cd test
           npm install ../.
-          hexo migrate github-issue Yikun/yikun.github.com
+          hexo migrate github-issue Yikun/hexo-migrator-github-issue
