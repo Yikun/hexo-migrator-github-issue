@@ -1,0 +1,21 @@
+name: Hexo Migrator Test
+
+on:
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: 12
+      - run: |
+          set -ex
+          npm install hexo-cli -g
+          hexo init test
+          cd test
+          npm install ../.
+          hexo migrate github-issue Yikun/yikun.github.com
