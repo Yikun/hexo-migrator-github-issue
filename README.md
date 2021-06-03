@@ -27,9 +27,20 @@ $ hexo migrate github-issue owner/repo [--publish]
 It will migrate owner/repo issue to hexo, there are some specific issue label is supported:
 
 - "category_", set the sepecfic category for the post
-- "top_", set the top priority for the post.
 - "draft", the post layout will be set to "draft", that means the post will be stored in draft dir
 - "publish", if user migrate with "--publish" opt, only post with "publish" label will be created.
+
+YAML Front-matter in the issue content is also supported:
+
+```
+---
+cover: http://demo.jpeg
+top: 1
+---
+
+# Title
+Hello World!
+```
 
 ## Demo
 
@@ -39,6 +50,7 @@ hexo migrate github-issue Yikun/yikun.github.com
 It will migrate Yikun/yikun.github.com issue to hexo.
 
 ## History
+- 0.1.6 add original front-matter support & remove top label support
 - 0.1.5 add --publish support
 - 0.1.4 category/top/draft support
 - 0.1.3 issue number support

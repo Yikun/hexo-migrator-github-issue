@@ -33,6 +33,7 @@ hexo.extend.migrator.register('github-issue', function(args, callback){
 
 function nextpage(cb) {
   var category_prefix = 'category_';
+  var regexp = /^(-{3,})(\r\n)([\s\S]+?)\r\n\1\r\n?([\s\S]*)/;
   repo.issues(pagesn, function(err, body, headers) {
     if (!err) {
       if (body && body.length) {
@@ -58,9 +59,17 @@ function nextpage(cb) {
           }
 
           // parse front-matter
-          issue.body = issue.body.replace(/\r\n/g, '\n');
-          var { _content, ...meta } = matter.parse(issue.body);
-          
+          var match = issue.body.match(regexp);
+          if (match) {
+            var separator = match[1];
+            var frontMatterData = match[3].replace(/\r\n/g, '\n');
+            var content = match[4];
+            var issueBody = separator + '\n' + frontMatterData + '\n' + separator + '\n' + content;
+          } else {
+            var issueBody = issue.body;
+          }
+          var { _content, ...meta } = matter.parse(issueBody);
+
           data.title = issue.title.replace(/\"/g,"");
           // if you migrate with --publish option, will skip unpublished issue
           if (publish_mode && (!published_tag) ) {
